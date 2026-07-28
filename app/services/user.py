@@ -4,6 +4,7 @@ from app.models.user import User
 from app.repositories.user import UserRepository
 from app.schemas.user import UserCreate
 from app.utils.security import hash_password
+from app.exceptions.user import UsernameAlreadyExistsError, EmailAlreadyExistsError
 
 class UserService:
     def __init__(self, user_repository: UserRepository):
@@ -17,7 +18,7 @@ class UserService:
         )
 
         if existing_username:
-            raise ValueError("Username already exists")
+            raise UsernameAlreadyExistsError("Username already exists")
 
         existing_email = self.user_repository.get_by_email(
             db,
@@ -25,7 +26,7 @@ class UserService:
         )
 
         if existing_email:
-            raise ValueError("Email already exists")
+            raise EmailAlreadyExistsError("Email already exists")
         user = User(
         username=user_data.username,
         email=user_data.email,

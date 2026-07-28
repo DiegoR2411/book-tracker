@@ -10,6 +10,7 @@ from app.database.database import Base
 if TYPE_CHECKING:
     from app.models.library import Library
     from app.models.book_author import BookAuthor
+    from app.models.review import Review
 
 class Book(Base):
     __tablename__ = "books"
@@ -85,3 +86,7 @@ class Book(Base):
     "BookAuthor",
     back_populates="book"
     )
+    reviews: Mapped[list["Review"]] = relationship(
+    "Review",
+    back_populates="book"
+)

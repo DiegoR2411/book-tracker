@@ -1,39 +1,44 @@
 from datetime import datetime, timezone
 from typing import TYPE_CHECKING
 
-from sqlalchemy import String, DateTime
+from sqlalchemy import Boolean, DateTime, ForeignKey, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.database import Base
 
+
 if TYPE_CHECKING:
-    from app.models.library import Library
-    from app.models.review import Review
+    from app.models.user import User
+    from app.models.book import Book
 
 
-class User(Base):
-    __tablename__ = "users"
+class Review(Base):
+    __tablename__ = "reviews"
 
     id: Mapped[int] = mapped_column(
         primary_key=True,
         autoincrement=True
     )
 
-    username: Mapped[str] = mapped_column(
-        String(50),
-        unique=True,
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"),
         nullable=False
     )
 
-    email: Mapped[str] = mapped_column(
-        String(255),
-        unique=True,
+    book_id: Mapped[int] = mapped_column(
+        ForeignKey("books.id", ondelete="CASCADE"),
         nullable=False
     )
 
-    hashed_password: Mapped[str] = mapped_column(
-        String(255),
+    content: Mapped[str] = mapped_column(
+        Text,
         nullable=False
+    )
+
+    contains_spoilers: Mapped[bool] = mapped_column(
+        Boolean,
+        nullable=False,
+        default=False
     )
 
     created_at: Mapped[datetime] = mapped_column(
@@ -49,11 +54,12 @@ class User(Base):
         nullable=False
     )
 
-    library_entries: Mapped[list["Library"]] = relationship(
-        "Library",
-        back_populates="user"
+    user: Mapped["User"] = relationship(
+        "User",
+        back_populates="reviews"
     )
-    reviews: Mapped[list["Review"]] = relationship(
-    "Review",
-    back_populates="user"
-)
+
+    book: Mapped["Book"] = relationship(
+        "Book",
+        back_populates="reviews"
+    )

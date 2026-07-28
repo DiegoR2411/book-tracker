@@ -10,6 +10,7 @@ from app.models import user
 from app.models import author
 from app.models import book
 from app.models import book_author
+from app.models import library
 from app.core.config import settings
 
 # this is the Alembic Config object, which provides

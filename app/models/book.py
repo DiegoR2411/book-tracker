@@ -1,10 +1,15 @@
 from datetime import datetime, timezone
+from typing import TYPE_CHECKING
 
-from sqlalchemy import DateTime, Integer, String, Text
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import DateTime, String, Text, Integer
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.database import Base
 
+
+if TYPE_CHECKING:
+    from app.models.library import Library
+    from app.models.book_author import BookAuthor
 
 class Book(Base):
     __tablename__ = "books"
@@ -71,4 +76,12 @@ class Book(Base):
         default=lambda: datetime.now(timezone.utc),
         onupdate=lambda: datetime.now(timezone.utc),
         nullable=False
+    )
+    library_entries: Mapped[list["Library"]] = relationship(
+        "Library",
+        back_populates="book"
+    )
+    book_authors: Mapped[list["BookAuthor"]] = relationship(
+    "BookAuthor",
+    back_populates="book"
     )

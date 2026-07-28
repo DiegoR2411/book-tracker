@@ -1,9 +1,14 @@
 from datetime import datetime, timezone
 
 from sqlalchemy import String, DateTime
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.database import Base
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from app.models.book_author import BookAuthor
 
 
 class Author(Base):
@@ -28,3 +33,7 @@ class Author(Base):
         onupdate=lambda: datetime.now(timezone.utc),
         nullable=False
     )
+    book_authors: Mapped[list["BookAuthor"]] = relationship(
+    "BookAuthor",
+    back_populates="author"
+)

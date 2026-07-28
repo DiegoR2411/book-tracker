@@ -5,6 +5,13 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database.database import Base
 
+from typing import TYPE_CHECKING
+
+from sqlalchemy.orm import relationship
+if TYPE_CHECKING:
+    from app.models.book import Book
+    from app.models.author import Author
+
 
 class BookAuthor(Base):
     __tablename__ = "book_authors"
@@ -34,4 +41,12 @@ class BookAuthor(Base):
         DateTime(),
         default=lambda: datetime.now(timezone.utc),
         nullable=False
+    )
+    book: Mapped["Book"] = relationship(
+    "Book",
+    back_populates="book_authors"
+    )
+    author: Mapped["Author"] = relationship(
+        "Author",
+        back_populates="book_authors"
     )

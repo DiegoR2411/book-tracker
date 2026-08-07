@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 from sqlalchemy import String, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.database.database import Base
+from app.database.session import Base
 
 from typing import TYPE_CHECKING
 

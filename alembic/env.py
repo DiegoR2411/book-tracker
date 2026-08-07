@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 
 from alembic import context
 
-from app.database.database import Base
+from app.database.session import Base
 from app.models import user
 from app.models import author
 from app.models import book

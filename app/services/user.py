@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from app.models.user import User
 from app.repositories.user import UserRepository
 from app.schemas.user import UserCreate
-from app.utils.security import hash_password
+from app.utils.password import hash_password
 from app.exceptions.user import UsernameAlreadyExistsError, EmailAlreadyExistsError
 
 class UserService:
